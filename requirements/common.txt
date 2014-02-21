@@ -1,0 +1,10 @@
+psycopg2==2.5.2
+flask==0.10.1
+flask-restful==0.2.1
+sqlalchemy==0.9.1
+flask-sqlalchemy==0.16
+Flask-Script==0.6.7
+Jinja2==2.7.2
+Werkzeug==0.9.4
+argparse==1.2.1
+URLObject==2.3.4
