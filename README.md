@@ -7,7 +7,7 @@ Penelophant is RESTful auction service that provides modular auction types, paym
 ## Install
 
 ### Requirements
-  * Python 2.7
+  * Python 2.7 or 3.3
   * SQLAlchemy Compatible Database (Postgres, MySQL, SQlite, etc.)
 
 ### Getting Started
