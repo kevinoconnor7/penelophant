@@ -10,7 +10,7 @@ Penelophant is RESTful auction service that provides modular auction types, paym
   * Python 2.7
   * SQLAlchemy Compatible Database (Postgres, MySQL, SQlite, etc.)
 
-### Create Config
+### Getting Started
   1. Duplicate the penelophant.config.DefaultConfig class and give it a name for your local config
   2. Ensure your local config subclasses DefaultConfig
   3. Create your virtualenv: ```virtualenv env```
