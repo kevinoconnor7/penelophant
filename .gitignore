@@ -53,3 +53,8 @@ docs/_build/
 
 # Sublime Project Settings
 *.sublime*
+
+# Configs
+penelophant/config/*
+!penelophant/config/DefaultConfig.py
+!penelophant/config/__init__.py
