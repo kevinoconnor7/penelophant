@@ -8,16 +8,19 @@ Penelophant is RESTful auction service that provides modular auction types, paym
 
 ### Requirements
   * Python 2.7 or 3.3
-  * SQLAlchemy Compatible Database (Postgres, MySQL, SQlite, etc.)
+  * SQLAlchemy Compatible Database (PostgreSQL, MariaDB, SQLite, etc.)
 
 ### Getting Started
-  1. Duplicate the penelophant.config.DefaultConfig class and give it a name for your local config
+  1. Duplicate the penelophant.config.DefaultConfig class and give it a
+     name for your local config
   2. Ensure your local config subclasses DefaultConfig
-  3. Create your virtualenv: ```virtualenv env```
-  4. Install packages: ```pip install -r requirements/dev.txt```
-  5. Inititalize the database: ```python manage.py -c "penelophant.config.LocalConfig" initdb```
-  6. Run the server: ```python manage.py -c "penelophant.config.LocalConfig" runserver```
+  3. Create your virtualenv: ```virtualenv env``` (```pyvenv-3.3```)
+  4. Enter your virtualenv: ```source env```
+  5. Install packages: ```pip install -r requirements/dev.txt``` (```pip-3.3```)
+  6. Inititalize the database: ```python manage.py -c "penelophant.config.LocalConfig" initdb``` (```python3```)
+  7. Run the server: ```python manage.py -c "penelophant.config.LocalConfig" runserver``` (```python3```)
 
 ## License
-For the full license text, please see the included LICENSE file.
+We are using the Apache Licence, version 2.0. For the full license
+text, please see the included LICENSE file.
 
