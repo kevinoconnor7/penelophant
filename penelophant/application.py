@@ -6,6 +6,7 @@ from penelophant.config.DefaultConfig import DefaultConfig
 from penelophant import views
 from penelophant import api as apis
 from .database import db
+from penelophant.auth.utils import load_backends
 
 DEFAULT_APP_NAME = "penelophant"
 DEFAULT_MODULES = (
@@ -23,6 +24,7 @@ def create_app(config=None):
   register_modules(app)
   register_api(app)
   register_db(app)
+  register_auth_backends(app)
 
   return app
 
@@ -52,3 +54,7 @@ def register_api(app):
 def register_db(app):
   """ Load SQLAlchemy into the app """
   db.init_app(app)
+
+def register_auth_backends(app):
+  """ Register auth backends from config """
+  load_backends(app.config['AUTH_BACKENDS'])
