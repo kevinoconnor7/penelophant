@@ -5,6 +5,7 @@ from flask_restful import Resource, abort, reqparse
 from penelophant.models.User import User as User_model
 from penelophant.database import db
 from penelophant import crud
+from penelophant.helpers.users import get_user_by_id_or_abort
 
 class User(Resource):
   """ Specific user API """
@@ -14,12 +15,12 @@ class User(Resource):
 
   def get(self, user_id):
     """ Retrieve user """
-    user = self.get_user_by_id_or_abort(user_id)
+    user = get_user_by_id_or_abort(user_id)
     return user.to_api(), 200
 
   def delete(self, user_id):
     """ Delete user """
-    user = self.get_user_by_id_or_abort(user_id)
+    user = get_user_by_id_or_abort(user_id)
     crud.delete(user)
     return '', 204
 
@@ -29,20 +30,11 @@ class User(Resource):
     parser.add_argument('email', type=str)
     args = parser.parse_args()
 
-    user = self.get_user_by_id_or_abort(user_id)
+    user = get_user_by_id_or_abort(user_id)
     user.email = args.email
     crud.save()
 
     return user.to_api(), 200
-
-  def get_user_by_id_or_abort(self, user_id):
-    """ Attempt to get user by id, or abort if it goes south """
-    user_id = int(user_id)
-    session = db.session
-    user = session.query(User_model).filter(User_model.id == user_id).first()
-    if not user:
-      abort(404, message="User {} doesn't exist".format(user_id))
-    return user
 
 class UserList(Resource):
   """ User index API """
