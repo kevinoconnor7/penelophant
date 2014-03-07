@@ -27,7 +27,7 @@ class User(Resource):
   def put(self, user_id):
     """ Update a user """
     parser = reqparse.RequestParser()
-    parser.add_argument('email', type=str)
+    parser.add_argument('email', type=int)
     args = parser.parse_args()
 
     user = get_user_by_id_or_abort(user_id)
@@ -45,7 +45,7 @@ class UserList(Resource):
   def post(self):
     """ Create new user """
     parser = reqparse.RequestParser()
-    parser.add_argument('email', type=str)
+    parser.add_argument('email', type=int)
     args = parser.parse_args()
 
     user = User_model()
