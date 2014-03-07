@@ -33,7 +33,4 @@ def load_backends(backends, force=False):
 
 def get_backend(backend):
   """ Get a given backend """
-  if BACKENDSCACHE.getattr('backend') is not None:
-    return BACKENDSCACHE.getattr('backend')
-  else:
-    return None
+  return BACKENDSCACHE.get(backend, None)

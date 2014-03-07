@@ -50,6 +50,7 @@ def register_api(app):
   api = Api(app, '/api')
   api.add_resource(apis.User, '/users/<string:user_id>')
   api.add_resource(apis.UserList, '/users')
+  api.add_resource(apis.Auth, '/auth/<string:provider>')
 
 def register_db(app):
   """ Load SQLAlchemy into the app """

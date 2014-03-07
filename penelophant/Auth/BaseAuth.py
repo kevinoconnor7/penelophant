@@ -5,9 +5,9 @@ class BaseAuth(object):
   """ Abstract Auth class"""
   __metaclass__ = ABCMeta
 
-  def handleLogin(self, given, key, data):
+  def getUser(self, **kwargs):
     """ Use the given with the key and data to confirm login """
-    return False
+    return None
 
   @abstractmethod
   def setup(self, **kwrargs):
