@@ -15,8 +15,8 @@ Penelophant is RESTful auction service that provides modular auction types, paym
      name for your local config
   2. Ensure your local config subclasses DefaultConfig
   3. Create your virtualenv: ```virtualenv env``` (```pyvenv-3.3```)
-  4. Enter your virtualenv: ```source env```
-  5. Install packages: ```pip install -r requirements/dev.txt``` (```pip-3.3```)
+  4. Enter your virtualenv: ```source env/bin/activate```
+  5. Install packages: ```pip install -r requirements/dev.txt``` (```pip3.3``` or ```pip-3.3```--whichever works)
   6. Inititalize the database: ```python manage.py -c "penelophant.config.LocalConfig" initdb``` (```python3```)
   7. Run the server: ```python manage.py -c "penelophant.config.LocalConfig" runserver``` (```python3```)
 
