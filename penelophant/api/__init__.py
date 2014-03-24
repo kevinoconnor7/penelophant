@@ -1,3 +1,3 @@
 """ Penelophant API classes """
-from .User import User, UserList
-from .Auth import Auth
+from .user import User, UserList
+from .auth import Auth
