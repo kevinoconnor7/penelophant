@@ -4,6 +4,7 @@ from flask_restful import Resource, abort, reqparse
 from penelophant.auth.utils import get_backend
 from penelophant.models.UserAuthentication import UserAuthentication
 from penelophant.helpers.users import get_user_by_id_or_abort
+from penelophant.auth.utils import generate_user_token
 
 from penelophant import crud
 from sqlalchemy.exc import IntegrityError
@@ -28,7 +29,11 @@ class Auth(Resource):
     if not user:
       abort(403, message='Login failed')
     else:
-      return user.to_api(), 200
+      # session['user_id'] = user.id
+      return {
+        "user": user.to_api(),
+        "token": generate_user_token(user).decode('ascii')
+      }, 200
 
   def put(self, provider):
     """ Create auth details for a provider """

@@ -1,5 +1,10 @@
 """ Utility function for authentication """
 from penelophant.auth.BaseAuth import BaseAuth
+from penelophant.helpers.users import get_user_by_id
+from penelophant import app
+from flask import g
+import jwt
+from datetime import datetime, timedelta
 import sys
 
 BACKENDSCACHE = {}
@@ -34,3 +39,22 @@ def load_backends(backends, force=False):
 def get_backend(backend):
   """ Get a given backend """
   return BACKENDSCACHE.get(backend, None)
+
+def generate_user_token(user):
+  """ Generate a token for a given user """
+
+  return jwt.encode({
+    "exp": datetime.utcnow() + timedelta(hours=6),
+    "user_id": user.id
+  }, app.config['SECRET_KEY'])
+
+def verify_user_token(token):
+  """ Verify a user token and return the User who its generated for """
+  user = getattr(g, 'user', None)
+  if user:
+    return user
+  try:
+    payload = jwt.decode(token, app.config['SECRET_KEY'])
+    return get_user_by_id(payload.get('user_id', None))
+  except (jwt.DecodeError, jwt.ExpiredSignature):
+    return None

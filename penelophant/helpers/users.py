@@ -4,11 +4,16 @@ from penelophant.database import db
 from penelophant.models.User import User
 from flask_restful import abort
 
-def get_user_by_id_or_abort(user_id):
-  """ Attempt to get user by id, or abort if it goes south """
+def get_user_by_id(user_id):
+  """ Get a user by a given id """
   user_id = int(user_id)
   session = db.session
   user = session.query(User).filter(User.id == user_id).first()
+  return user
+
+def get_user_by_id_or_abort(user_id):
+  """ Attempt to get user by id, or abort if it goes south """
+  user = get_user_by_id(user_id)
   if not user:
     abort(404, message="User {} doesn't exist".format(user_id))
   return user

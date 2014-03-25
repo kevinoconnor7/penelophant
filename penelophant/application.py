@@ -1,35 +1,36 @@
 """ Application initalizer """
 
-from flask import Flask
+from penelophant import app, auther
+from flask import g
 from flask_restful import Api
-from penelophant.config.DefaultConfig import DefaultConfig
 from penelophant import views
 from penelophant import api as apis
 from .database import db
-from penelophant.auth.utils import load_backends
+from penelophant.auth.utils import load_backends, verify_user_token
 
 DEFAULT_APP_NAME = "penelophant"
 DEFAULT_MODULES = (
   (views.frontend, ""),
 )
 
-def create_app(config=None):
+def setup_app(config):
   """ App factory """
 
-  app_name = DEFAULT_APP_NAME
+  #app_name = DEFAULT_APP_NAME
 
-  app = Flask(app_name)
+  #app = Flask(app_name)
 
-  configure_app(app, config)
-  register_modules(app)
-  register_api(app)
-  register_db(app)
-  register_auth_backends(app)
+  configure_app(config)
+  register_modules()
+  register_api()
+  register_db()
+  register_auth_backends()
 
-  return app
+  #return app
 
-def configure_app(app, config):
+def configure_app(config):
   """ Configuration loader """
+  from penelophant.config.DefaultConfig import DefaultConfig
 
   app.config.from_object(DefaultConfig())
 
@@ -38,24 +39,44 @@ def configure_app(app, config):
 
   app.config.from_envvar('APP_CONFIG', silent=True)
 
-def register_modules(app, modules=None):
+def register_modules(modules=None):
   """ Register the view modules """
   if not modules:
     modules = DEFAULT_MODULES
   for module, url_prefix in modules:
     app.register_module(module, url_prefix=url_prefix)
 
-def register_api(app):
+def register_api():
   """ Register the API """
   api = Api(app, '/api')
   api.add_resource(apis.User, '/users/<string:user_id>')
   api.add_resource(apis.UserList, '/users')
   api.add_resource(apis.Auth, '/auth/<string:provider>')
+  api.add_resource(apis.Token, '/token')
 
-def register_db(app):
+def register_db():
   """ Load SQLAlchemy into the app """
   db.init_app(app)
 
-def register_auth_backends(app):
+def register_auth_backends():
   """ Register auth backends from config """
   load_backends(app.config['AUTH_BACKENDS'])
+
+@auther.verify_token
+def verify_token(token):
+  """ Overload the basic auth verify password method """
+
+  user = None
+
+  if token:
+    user = verify_user_token(token)
+
+  # For use of session based login
+  #if not user:
+  #  user = get_user_by_id(session.get('user_id', None))
+
+  if user:
+    setattr(g, 'user', user)
+    return True
+  else:
+    return False
