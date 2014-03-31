@@ -16,7 +16,13 @@ class Auction(Model):
   start_price = db.Column(db.Numeric('13,2'), default=0)
   reserve = db.Column(db.Numeric('13,2'), default=0)
 
+  type = db.Column('type', db.String(50))
+
   creator = db.relationship(User)
+
+  __mapper_args__ = {
+    'polymorphic_on': type
+  }
 
   @property
   def reserve_met(self):
@@ -31,3 +37,11 @@ class Auction(Model):
     'end_time',
     'reserve_met'
   ]
+
+  def create_bid(self):
+    """ Create bid logic """
+    pass
+
+  def find_winner(self):
+    """ Determine winner logic """
+    pass
