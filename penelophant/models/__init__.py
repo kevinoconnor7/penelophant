@@ -4,3 +4,4 @@ from .UserAuthentication import UserAuthentication
 from .Auction import Auction
 from .Bid import Bid
 from .Invoice import Invoice
+from .auctions.DoubleBlindAuction import DoubleBlindAuction
