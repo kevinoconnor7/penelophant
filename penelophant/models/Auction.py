@@ -13,6 +13,8 @@ class Auction(Model):
   start_time = db.Column(db.TIMESTAMP, default=db.func.now())
   end_time = db.Column(db.TIMESTAMP)
 
+  title = db.Column(db.String(100))
+
   start_price = db.Column(db.Numeric('13,2'), default=0)
   reserve = db.Column(db.Numeric('13,2'), default=0)
 
@@ -33,9 +35,10 @@ class Auction(Model):
   __api_fields__ = [
     'id',
     'creator',
-    'start_time',
-    'end_time',
-    'reserve_met'
+    #'start_time',
+    #'end_time',
+    'reserve_met',
+    'title'
   ]
 
   def create_bid(self):
