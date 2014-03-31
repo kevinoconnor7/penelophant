@@ -6,3 +6,4 @@ SQLAlchemy==0.9.3
 passlib==1.6.2
 py-bcrypt==0.4
 PyJWT==0.1.9
+balanced==1.0.1
