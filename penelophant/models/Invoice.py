@@ -11,11 +11,11 @@ class Invoice(Model):
   id = db.Column(db.Integer, primary_key=True)
   user_id = db.Column(db.Integer,
     db.ForeignKey(User.id, ondelete='RESTRICT', onupdate='CASCADE'),
-    nullable = False
+    nullable=False
   )
   bid_id = db.Column(db.Integer,
     db.ForeignKey(Bid.id, ondelete='RESTRICT', onupdate='CASCADE'),
-    nullable = False
+    nullable=False
   )
   amount = db.Column(db.Numeric('13,2'), default=0)
   paid = db.Column(db.Boolean(), default=False)

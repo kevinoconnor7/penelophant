@@ -10,11 +10,11 @@ class Bid(Model):
   id = db.Column(db.Integer, primary_key=True)
   user_id = db.Column(db.Integer,
     db.ForeignKey(User.id, ondelete='RESTRICT', onupdate='CASCADE'),
-    nullable = False
+    nullable=False
   )
   auction_id = db.Column(db.Integer,
     db.ForeignKey(Auction.id, ondelete='RESTRICT', onupdate='CASCADE'),
-    nullable = False
+    nullable=False
   )
   bid_time = db.Column(db.TIMESTAMP, default=db.func.now())
   price = db.Column(db.Numeric('13,2'), default=0)

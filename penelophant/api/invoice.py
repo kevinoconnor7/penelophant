@@ -1,11 +1,14 @@
 """ Auction REST resources """
 
-from flask import g
-from flask_restful import Resource, reqparse
-from decimal import Decimal
-from penelophant import crud, auther
+from flask_restful import Resource
+from penelophant import auther
 from penelophant.database import db
 from penelophant.models.Invoice import Invoice as Invoice_model
+
+#from flask import g
+#from decimal import Decimal
+#from flask_restful import Resource, reqparse
+#from penelophant import crud, auther"""
 
 class InvoiceList(Resource):
   """ Invoice List REST API """
@@ -24,5 +27,4 @@ class InvoiceList(Resource):
 
   def post(self):
     """ User pays an invoice """
-    pass
 
