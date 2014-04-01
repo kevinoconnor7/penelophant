@@ -66,6 +66,8 @@ class Model(db.Model):
             ))
         else:
           data[key] = getattr(self, key)
+          if hasattr(data[key], 'to_api'):
+            data[key] = data[key].to_api()
 
     return data
 
