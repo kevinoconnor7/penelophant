@@ -8,12 +8,13 @@ class Auction(Model):
   """ Auction data representation """
   id = db.Column(db.Integer, primary_key=True)
   creator_user_id = db.Column(db.Integer,
-    db.ForeignKey(User.id, ondelete='RESTRICT', onupdate='CASCADE')
+    db.ForeignKey(User.id, ondelete='RESTRICT', onupdate='CASCADE'),
+    nullable = False
   )
   start_time = db.Column(db.TIMESTAMP, default=db.func.now())
   end_time = db.Column(db.TIMESTAMP)
 
-  title = db.Column(db.String(100))
+  title = db.Column(db.String(100), nullable = False)
 
   start_price = db.Column(db.Numeric('13,2'), default=0)
   reserve = db.Column(db.Numeric('13,2'), default=0)
