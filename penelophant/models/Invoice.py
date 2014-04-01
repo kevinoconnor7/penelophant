@@ -30,5 +30,5 @@ class Invoice(Model):
     'id',
     'user',
     'bid',
-    'amunt'
+    'amount'
   ]
