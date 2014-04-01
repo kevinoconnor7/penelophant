@@ -37,21 +37,28 @@ class HTTPAuth(object):
     @wraps(f)
     def decorated(*args, **kwargs):
       """ Require auth or throw error """
-      auth = request.headers.get('authorization')
-      if auth:
-        auth = auth.split()
-
-        if len(auth) != 2 or auth[0] != 'Bearer' or not auth[1]:
-          token = None
-        else:
-          token = b64decode(auth[1])
-      else:
-        token = None
+      token = self.get_token()
 
       if not self.authenticate(token):
         return self.auth_error_callback()
       return f(*args, **kwargs)
     return decorated
+
+  def get_token(self):
+    """ Get auth token from header """
+    auth = request.headers.get('authorization')
+    if auth:
+      auth = auth.split()
+
+      if len(auth) != 2 or auth[0] != 'Bearer' or not auth[1]:
+        token = None
+      else:
+        token = b64decode(auth[1])
+    else:
+      token = None
+
+    return token
+
 
   def verify_token(self, f):
     """ Set the token verification callback function """

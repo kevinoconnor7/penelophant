@@ -6,6 +6,7 @@ from passlib.hash import bcrypt_sha256
 from penelophant.database import db
 from penelophant.models.User import User
 from penelophant.models.UserAuthentication import UserAuthentication
+from sqlalchemy.orm.exc import NoResultFound
 
 
 class PasswordAuth(BaseAuth):
@@ -27,11 +28,15 @@ class PasswordAuth(BaseAuth):
     """ Given the user's login information, return the user """
 
     session = db.session
-    ua = session.query(UserAuthentication)\
-      .join(User)\
-      .filter(UserAuthentication.provider == self.provider)\
-      .filter(User.email == email)\
-      .one()
+    ua = None
+    try:
+      ua = session.query(UserAuthentication)\
+        .join(User)\
+        .filter(UserAuthentication.provider == self.provider)\
+        .filter(User.email == email)\
+        .one()
+    except NoResultFound:
+      pass
 
     if not ua:
       return None

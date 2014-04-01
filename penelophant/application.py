@@ -63,6 +63,18 @@ def register_auth_backends():
   """ Register auth backends from config """
   load_backends(app.config['AUTH_BACKENDS'])
 
+@app.before_request
+def get_current_user_by_token():
+  """ Load the logged in user into a request variable to future use """
+  token = auther.get_token()
+
+  user = None
+
+  if token:
+    user = verify_user_token(token)
+
+  setattr(g, 'user', user)
+
 @auther.verify_token
 def verify_token(token):
   """ Overload the basic auth verify password method """
