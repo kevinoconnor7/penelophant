@@ -6,7 +6,6 @@ import json
 class Model(db.Model):
   """ Abstract Base Model """
   __abstract__ = True
-  _overwrite_columns = True
   __api_fields__ = None
 
   def __init__(self, **kwargs):
