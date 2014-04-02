@@ -28,8 +28,8 @@ class InvoiceAlreadyPaid(Exception):
 class AuctionStillLive(Exception):
   """ Auction has not ended """
   def __init__(self):
-    super(InvoiceAlreadyPaid, self).__init__()
+    super(AuctionStillLive, self).__init__()
 
   def ___str___(self):
     return "The auction has not ended"
-  
+

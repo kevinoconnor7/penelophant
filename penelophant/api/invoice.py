@@ -2,7 +2,7 @@
 
 from flask import g
 from flask_restful import Resource, fields, marshal
-from penelophant import auther
+from penelophant import auther, crud
 from penelophant.database import db
 from penelophant.models.Invoice import Invoice as Invoice_model
 from penelophant.helpers.invoice import get_invoice_by_id_or_abort
@@ -77,6 +77,6 @@ class Invoice(Resource):
       'paid': fields.Boolean
     }
 
-    return marshal(invoice), 200
-      
-    
+    return marshal(invoice, ret_fields), 200
+
+

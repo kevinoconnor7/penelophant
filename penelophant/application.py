@@ -50,16 +50,16 @@ def register_modules(modules=None):
 def register_api():
   """ Register the API """
   api = Api(app, '/api')
-  
+
   api.add_resource(apis.User, '/users/<int:user_id>')
   api.add_resource(apis.UserList, '/users')
   api.add_resource(apis.Auth, '/auth/<string:provider>')
   api.add_resource(apis.Token, '/token')
-  
+
   api.add_resource(apis.AuctionList, '/auctions')
   api.add_resource(apis.Auction, '/auction/<int:auction_id>')
   api.add_resource(apis.BidAuction, '/auction/<int:auction_id>/bid')
-  
+
   api.add_resource(apis.InvoiceList, '/invoices')
   api.add_resource(apis.Invoice, '/invoice/<int:invoice_id>')
 
@@ -101,3 +101,4 @@ def verify_token(token):
     return True
   else:
     return False
+

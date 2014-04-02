@@ -1,7 +1,6 @@
 """ Double Blind Auction implementation """
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import object_session
-from datetime import datetime, timedelta
 from penelophant.models.Auction import Auction
 from penelophant.models.Bid import Bid
 from penelophant.exceptions import AuctionStillLive
