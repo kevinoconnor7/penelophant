@@ -82,7 +82,6 @@ class Auction(Resource):
 
   def get(self, auction_id):
     """ Retrieve a specific auction """
-    print(auction_id)
     session = db.session
     auction = session.query(Auction_model).get(auction_id)
 
