@@ -6,8 +6,8 @@ from penelophant.database import db
 from penelophant.models.Invoice import Invoice as Invoice_model
 
 #from flask import g
-#from decimal import Decimal
 #from flask_restful import Resource, reqparse
+#from decimal import Decimal
 #from penelophant import crud, auther"""
 
 class InvoiceList(Resource):
@@ -25,6 +25,5 @@ class InvoiceList(Resource):
 
     return data, 200
 
-  def post(self):
+  def put(self):
     """ User pays an invoice """
-

@@ -7,6 +7,7 @@ from penelophant import views
 from penelophant import api as apis
 from .database import db
 from penelophant.auth.utils import load_backends, verify_user_token
+#import balanced <-- httplib doesn't work in python3
 
 DEFAULT_APP_NAME = "penelophant"
 DEFAULT_MODULES = (
