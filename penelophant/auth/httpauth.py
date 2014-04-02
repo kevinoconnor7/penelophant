@@ -2,8 +2,6 @@
 
 from functools import wraps
 from flask import request, make_response
-from base64 import b64decode
-
 
 class HTTPAuth(object):
   """ HTTP Bases authentication using authorization token """
@@ -53,7 +51,7 @@ class HTTPAuth(object):
       if len(auth) != 2 or auth[0] != 'Bearer' or not auth[1]:
         token = None
       else:
-        token = b64decode(auth[1])
+        token = auth[1]
     else:
       token = None
 

@@ -40,13 +40,18 @@ def get_backend(backend):
   """ Get a given backend """
   return BACKENDSCACHE.get(backend, None)
 
-def generate_user_token(user):
+def generate_user_token(user, encode=True):
   """ Generate a token for a given user """
 
-  return jwt.encode({
+  token = jwt.encode({
     "exp": datetime.utcnow() + timedelta(hours=6),
     "user_id": user.id
   }, app.config['SECRET_KEY'])
+
+  if encode:
+    token = token.decode('UTF8')
+
+  return token
 
 def verify_user_token(token):
   """ Verify a user token and return the User who its generated for """

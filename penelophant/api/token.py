@@ -17,5 +17,5 @@ class Token(Resource):
     if not g.user:
       abort(403, message='Not valid login found')
     return {
-      "token": generate_user_token(g.user).decode('ascii')
+      "token": generate_user_token(g.user)
     }, 200

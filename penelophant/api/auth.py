@@ -6,6 +6,7 @@ from penelophant import auther
 from penelophant.auth.utils import get_backend
 from penelophant.models.UserAuthentication import UserAuthentication
 from penelophant.auth.utils import generate_user_token
+from penelophant.exceptions import AuthSetupMissingInfo
 
 from penelophant import crud
 from sqlalchemy.exc import IntegrityError
@@ -31,7 +32,7 @@ class Auth(Resource):
       abort(403, message='Login failed')
     else:
       # session['user_id'] = user.id
-      data = {'user': user, 'token': generate_user_token(user).decode('ascii')}
+      data = {'user': user, 'token': generate_user_token(user)}
       ret_fields = {
         'token': fields.String,
         'user': fields.Nested({
@@ -52,7 +53,10 @@ class Auth(Resource):
 
     args = parser.parse_args()
 
-    key, details = backend().setup(**args)
+    try:
+      key, details = backend().setup(**args)
+    except AuthSetupMissingInfo:
+      abort(400, message="Missing data for auth provider")
 
     ua = UserAuthentication()
     ua.user = g.user
