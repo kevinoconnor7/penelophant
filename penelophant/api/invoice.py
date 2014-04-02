@@ -5,7 +5,7 @@ from flask_restful import Resource, fields, marshal
 from penelophant import auther
 from penelophant.database import db
 from penelophant.models.Invoice import Invoice as Invoice_model
-from penelophant.helpers.invoice import get_invoice_by_id
+from penelophant.helpers.invoice import get_invoice_by_id_or_abort
 
 class InvoiceList(Resource):
   """ Invoice List REST API endpoint """
@@ -46,6 +46,36 @@ class InvoiceList(Resource):
 class Invoice(Resource):
   """ Invoice REST API endpoint """
 
+  @auther.login_required
   def put(self, invoice_id):
     """ User pays an invoice """
-    pass
+    invoice = get_invoice_by_id_or_abort(invoice_id)
+
+    if invoice.paid:
+      raise Exception("Invoice already paid.")
+
+    # FIXME: actually process payments
+    # currently only marks the invoice as paid
+
+    invoice.paid = True
+    crud.save()
+
+    ret_fields = {
+      'id': fields.Integer,
+      'bid': fields.Nested({
+          'id': fields.Integer,
+          'bid_time': fields.DateTime,
+          'price': fields.Fixed(decimals=2),
+          'auction': fields.Nested({
+              'id': fields.Integer,
+              'title': fields.String,
+              'type': fields.String
+              })
+          }),
+      'amount': fields.Fixed(decimals=2),
+      'paid': fields.Boolean
+    }
+
+    return marshal(invoice), 200
+      
+    
