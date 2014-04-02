@@ -1,11 +1,13 @@
 """ User API representation object """
 
+from flask import g
 from sqlalchemy.exc import IntegrityError
 from flask_restful import Resource, abort, reqparse
 from penelophant.models.User import User as User_model
 from penelophant.database import db
-from penelophant import crud
+from penelophant import crud, auther
 from penelophant.helpers.users import get_user_by_id_or_abort
+from penelophant.auth.utils import generate_user_token
 
 class User(Resource):
   """ Specific user API """
@@ -18,12 +20,18 @@ class User(Resource):
     user = get_user_by_id_or_abort(user_id)
     return user.to_api(), 200
 
+  @auther.login_required
   def delete(self, user_id):
     """ Delete user """
     user = get_user_by_id_or_abort(user_id)
+
+    if user != g.user:
+      abort(403, message="Not authorized to delete user")
+
     crud.delete(user)
     return '', 204
 
+  @auther.login_required
   def put(self, user_id):
     """ Update a user """
     parser = reqparse.RequestParser()
@@ -31,6 +39,10 @@ class User(Resource):
     args = parser.parse_args()
 
     user = get_user_by_id_or_abort(user_id)
+
+    if user != g.user:
+      abort(403, message="Not authorized to update user")
+
     user.email = args.email
     crud.save()
 
@@ -55,6 +67,10 @@ class UserList(Resource):
       crud.add(user)
     except IntegrityError:
       abort(400, message="User %s already exists" % args.email)
+
+    data = dict()
+    data['user'] = user.to_api()
+    data['token'] = generate_user_token(user).decode('ascii')
     return user.to_api(), 201
 
   def get(self):

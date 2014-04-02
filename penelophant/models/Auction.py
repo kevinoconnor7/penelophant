@@ -1,8 +1,11 @@
 """ Auction Model """
 
+from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.orm import object_session
 from penelophant.database import db
 from .Model import Model
 from .User import User
+from .Bid import Bid
 
 class Auction(Model):
   """ Auction data representation """
@@ -23,6 +26,11 @@ class Auction(Model):
 
   creator = db.relationship(User)
 
+  show_highest_bid = True
+
+  # Populated by the backref
+  bids = db.relationship(Bid, backref="auction")
+
   __mapper_args__ = {
     'polymorphic_on': type
   }
@@ -36,16 +44,29 @@ class Auction(Model):
   __api_fields__ = [
     'id',
     'creator',
+    'type',
     #'start_time',
     #'end_time',
     'reserve_met',
-    'title'
+    'title',
+    'show_highest_bid',
+    'highest_bid'
   ]
 
-  def create_bid(self):
+  def create_bid(self, bid):
     """ Create bid logic """
     pass
 
   def find_winner(self):
     """ Determine winner logic """
     pass
+
+  @property
+  def highest_bid(self):
+    """ Return the highest bid """
+    if not self.show_highest_bid:
+      return None
+    try:
+      return object_session(self).query(Bid).with_parent(self).order_by(Bid.price.desc()).one()
+    except NoResultFound:
+      return None
