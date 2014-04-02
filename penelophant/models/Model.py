@@ -68,6 +68,16 @@ class Model(db.Model):
           if hasattr(data[key], 'to_api'):
             data[key] = data[key].to_api()
 
+    for key in show:
+      split = key.split('.')
+      check = '%s.%s' % (path, split[-1])
+      if split[-1] in data:
+        continue
+      print(split[-1])
+      if split[0] == self.__tablename__.lower():
+        if check not in hide and hasattr(self, split[-1]):
+          data[split[-1]] = getattr(self, split[-1])
+
     return data
 
   def to_api(self):
