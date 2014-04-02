@@ -6,6 +6,7 @@ from penelophant import auther
 from penelophant.database import db
 from penelophant.models.Invoice import Invoice as Invoice_model
 from penelophant.helpers.invoice import get_invoice_by_id_or_abort
+from penelophant.exceptions import InvoiceAlreadyPaid
 
 class InvoiceList(Resource):
   """ Invoice List REST API endpoint """
@@ -52,7 +53,7 @@ class Invoice(Resource):
     invoice = get_invoice_by_id_or_abort(invoice_id)
 
     if invoice.paid:
-      raise Exception("Invoice already paid.")
+      raise InvoiceAlreadyPaid
 
     # FIXME: actually process payments
     # currently only marks the invoice as paid

@@ -16,3 +16,20 @@ class AuthSetupMissingInfo(Exception):
 
   def __str__(self):
     return repr(self.s)
+
+class InvoiceAlreadyPaid(Exception):
+  """ The invoice has already been paid """
+  def __init__(self):
+    super(InvoiceAlreadyPaid, self).__init__()
+
+  def ___str___(self):
+    return "Duplicate payments are not permitted"
+
+class AuctionStillLive(Exception):
+  """ Auction has not ended """
+  def __init__(self):
+    super(InvoiceAlreadyPaid, self).__init__()
+
+  def ___str___(self):
+    return "The auction has not ended"
+  

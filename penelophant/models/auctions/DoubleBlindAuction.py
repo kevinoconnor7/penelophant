@@ -4,6 +4,7 @@ from sqlalchemy.orm import object_session
 from datetime import datetime, timedelta
 from penelophant.models.Auction import Auction
 from penelophant.models.Bid import Bid
+from penelophant.exceptions import AuctionStillLive
 
 class DoubleBlindAuction(Auction):
   """ Double Blind Auction implementation """
@@ -28,7 +29,7 @@ class DoubleBlindAuction(Auction):
     top2 = None
 
     if not self.has_ended:
-      raise Exception("Auction has not ended.")
+      raise AuctionStillLive
 
     try:
       top2 = object_session(self)\
