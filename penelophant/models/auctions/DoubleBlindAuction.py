@@ -1,6 +1,7 @@
 """ Double Blind Auction implementation """
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import object_session
+from datetime import datetime, timedelta
 from penelophant.models.Auction import Auction
 from penelophant.models.Bid import Bid
 
@@ -25,6 +26,10 @@ class DoubleBlindAuction(Auction):
   def find_winner(self):
     """ Determine winner logic and return (winning_bid, invoice_amount) """
     top2 = None
+
+    if not self.has_ended:
+      raise Exception("Auction has not ended.")
+
     try:
       top2 = object_session(self)\
         .query(Bid)\
