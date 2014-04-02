@@ -26,7 +26,7 @@ class Auction(Model):
 
   creator = db.relationship(User)
 
-  show_highest_bid = True
+  sealed_bids = False
 
   # Populated by the backref
   bids = db.relationship(Bid, backref="auction")
@@ -49,7 +49,7 @@ class Auction(Model):
     #'end_time',
     'reserve_met',
     'title',
-    'show_highest_bid',
+    'sealed_bids',
     'highest_bid'
   ]
 
@@ -62,9 +62,22 @@ class Auction(Model):
     pass
 
   @property
+  def posted_bids(self):
+    """ Get posted bids for the auction """
+    if self.sealed_bids:
+      return None
+
+    return object_session(self)\
+      .query(Bid)\
+      .with_parent(self)\
+      .order_by(Bid.price.desc())\
+      .order_by(Bid.bid_time.desc())\
+      .all()
+
+  @property
   def highest_bid(self):
     """ Return the highest bid """
-    if not self.show_highest_bid:
+    if self.sealed_bids:
       return None
     try:
       return object_session(self).query(Bid).with_parent(self).order_by(Bid.price.desc()).one()

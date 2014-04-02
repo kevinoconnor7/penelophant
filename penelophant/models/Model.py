@@ -73,7 +73,6 @@ class Model(db.Model):
       check = '%s.%s' % (path, split[-1])
       if split[-1] in data:
         continue
-      print(split[-1])
       if split[0] == self.__tablename__.lower():
         if check not in hide and hasattr(self, split[-1]):
           data[split[-1]] = getattr(self, split[-1])
