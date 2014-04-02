@@ -26,6 +26,6 @@ class Bid(Model):
   __api_fields__ = [
     'id',
     'auction',
-    'bid_time',
+    #'bid_time',
     'price'
   ]

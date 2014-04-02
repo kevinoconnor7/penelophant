@@ -20,11 +20,13 @@ class AuctionList(Resource):
       .filter(Auction_model.end_time > datetime.utcnow())\
       .all()
 
-    data = dict()
-    data['auctions'] = [auction.to_api() for auction in auctions]
-    data['length'] = len(auctions)
+    if auctions is None:
+      return {'auctions': {}, 'length': 0}, 200
 
-    return data, 200
+    return {
+      'auctions': [auction.to_api() for auction in auctions],
+      'length': len(auctions)
+    }, 200
 
   @auther.login_required
   def post(self):
