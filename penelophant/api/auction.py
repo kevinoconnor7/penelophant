@@ -86,7 +86,7 @@ class Auction(Resource):
     session = db.session
     auction = session.query(Auction_model).get(auction_id)
 
-    if auction.start_time > datetime.utcnow() and auction.creator is not g.user:
+    if auction.start_time > datetime.utcnow() and auction.creator != g.user:
       abort(403, message="Not authorized to view this auction")
 
     return auction.to_api(), 200
@@ -99,7 +99,7 @@ class Auction(Resource):
     session = db.session
     auction = session.query(Auction_model).get(auction_id)
 
-    if auction.creator is not g.user:
+    if auction.creator != g.user:
       abort(403, message="Not authorized to update auction")
 
     parser = reqparse.RequestParser()
