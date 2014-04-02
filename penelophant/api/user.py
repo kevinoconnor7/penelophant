@@ -2,7 +2,7 @@
 
 from flask import g
 from sqlalchemy.exc import IntegrityError
-from flask_restful import Resource, abort, reqparse
+from flask_restful import Resource, abort, reqparse, fields, marshal
 from penelophant.models.User import User as User_model
 from penelophant.database import db
 from penelophant import crud, auther
@@ -18,7 +18,12 @@ class User(Resource):
   def get(self, user_id):
     """ Retrieve user """
     user = get_user_by_id_or_abort(user_id)
-    return user.to_api(), 200
+
+    ret_fields = {
+      'id': fields.Integer,
+      'email': fields.String
+    }
+    return marshal(user, ret_fields), 200
 
   @auther.login_required
   def delete(self, user_id):
@@ -46,7 +51,11 @@ class User(Resource):
     user.email = args.email
     crud.save()
 
-    return user.to_api(), 200
+    ret_fields = {
+      'id': fields.Integer,
+      'email': fields.String
+    }
+    return marshal(user, ret_fields), 200
 
 class UserList(Resource):
   """ User index API """
@@ -71,15 +80,32 @@ class UserList(Resource):
     data = dict()
     data['user'] = user.to_api()
     data['token'] = generate_user_token(user).decode('ascii')
-    return user.to_api(), 201
+    ret_fields = {
+      'token': fields.String,
+      'user': fields.Nested({
+        'id': fields.Integer,
+        'email': fields.String
+      })
+    }
+    return marshal(data, ret_fields), 201
 
   def get(self):
     """ Get a list of users """
     session = db.session
     users = session.query(User_model).all()
 
-    data = dict()
-    data['users'] = [user.to_api() for user in users]
-    data['count'] = len(users)
+    data = {'users': [], 'length': 0}
 
-    return data
+    if users is not None:
+      data['users'] = users
+      data['length'] = len(users)
+
+    ret_fields = {
+      'length': fields.Integer,
+      'users': fields.List(fields.Nested({
+        'id': fields.Integer,
+        'email': fields.String
+      }))
+    }
+
+    return marshal(data, ret_fields), 200

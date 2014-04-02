@@ -22,10 +22,3 @@ class Bid(Model):
 
   # Will be populated by backref
   auction = None
-
-  __api_fields__ = [
-    'id',
-    'auction',
-    #'bid_time',
-    'price'
-  ]

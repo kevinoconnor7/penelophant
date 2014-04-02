@@ -1,7 +1,7 @@
 """ User API representation object """
 
 from flask import g
-from flask_restful import Resource, abort, reqparse
+from flask_restful import Resource, abort, reqparse, fields, marshal
 from penelophant import auther
 from penelophant.auth.utils import get_backend
 from penelophant.models.UserAuthentication import UserAuthentication
@@ -31,10 +31,15 @@ class Auth(Resource):
       abort(403, message='Login failed')
     else:
       # session['user_id'] = user.id
-      return {
-        "user": user.to_api(),
-        "token": generate_user_token(user).decode('ascii')
-      }, 200
+      data = {'user': user, 'token': generate_user_token(user).decode('ascii')}
+      ret_fields = {
+        'token': fields.String,
+        'user': fields.Nested({
+          'id': fields.Integer,
+          'email': fields.String
+        })
+      }
+      return marshal(data, ret_fields), 200
 
   @auther.login_required
   def put(self, provider):
@@ -60,7 +65,7 @@ class Auth(Resource):
     except IntegrityError:
       abort(400, message="Authentication provider and details already exist")
 
-    return '', 200
+    return '', 201
 
   def get_backend(self, provider):
     """ Get auth backend """

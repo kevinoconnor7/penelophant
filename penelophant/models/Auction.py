@@ -36,20 +36,6 @@ class Auction(Model):
     'polymorphic_on': type
   }
 
-  __api_fields__ = [
-    'id',
-    'creator',
-    'type',
-    #'start_time',
-    #'end_time',
-    'reserve_met',
-    'title',
-    'sealed_bids',
-    'highest_bid',
-    'has_started',
-    'has_ended'
-  ]
-
   @property
   def reserve_met(self):
     """ Return whether not not the reserve has been met """

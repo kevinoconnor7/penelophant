@@ -1,7 +1,7 @@
 """ Auction REST resources """
 
 from flask import g, Markup
-from flask_restful import Resource, reqparse, abort
+from flask_restful import Resource, reqparse, abort, fields, marshal
 from decimal import Decimal
 from datetime import datetime, timedelta
 from penelophant import crud, auther
@@ -20,13 +20,31 @@ class AuctionList(Resource):
       .filter(Auction_model.end_time > datetime.utcnow())\
       .all()
 
-    if auctions is None:
-      return {'auctions': {}, 'length': 0}, 200
+    data = {'auctions': {}, 'length': 0}
+    if auctions is not None:
+      data['auctions'] = auctions
+      data['length'] = len(auctions)
 
-    return {
-      'auctions': [auction.to_api() for auction in auctions],
-      'length': len(auctions)
-    }, 200
+    ret_fields = {
+      'length': fields.Integer,
+      'auctions': fields.List(fields.Nested({
+          'id': fields.Integer,
+          'title': fields.String,
+          'type': fields.String,
+          'reserve_met': fields.Boolean,
+          'sealed_bids': fields.Boolean,
+          'start_time': fields.DateTime,
+          'end_time': fields.DateTime,
+          'highest_bid': fields.Nested({
+            'id': fields.Integer,
+            'price': fields.Fixed(decimals=2)
+          }),
+          'has_started': fields.Boolean,
+          'has_ended': fields.Boolean
+        }))
+    }
+
+    return marshal(data, ret_fields), 200
 
   @auther.login_required
   def post(self):
@@ -77,7 +95,21 @@ class AuctionList(Resource):
 
     crud.add(auction)
 
-    return auction.to_api(), 201
+    ret_fields = {
+      'id': fields.Integer,
+      'title': fields.String,
+      'type': fields.String,
+      'reserve_met': fields.Boolean,
+      'sealed_bids': fields.Boolean,
+      'start_time': fields.DateTime,
+      'end_time': fields.DateTime,
+      'has_started': fields.Boolean,
+      'has_ended': fields.Boolean,
+      'starting_price': fields.Fixed(decimals=2),
+      'reserve': fields.Fixed(decimals=2)
+    }
+
+    return marshal(auction, ret_fields), 201
 
 class Auction(Resource):
   """ Auction REST API Endpoint """
@@ -90,7 +122,23 @@ class Auction(Resource):
     if auction.start_time > datetime.utcnow() and auction.creator != g.user:
       abort(403, message="Not authorized to view this auction")
 
-    return auction.to_api(), 200
+    ret_fields = {
+      'id': fields.Integer,
+      'title': fields.String,
+      'type': fields.String,
+      'reserve_met': fields.Boolean,
+      'sealed_bids': fields.Boolean,
+      'start_time': fields.DateTime,
+      'end_time': fields.DateTime,
+      'highest_bid': fields.Nested({
+        'id': fields.Integer,
+        'price': fields.Fixed(decimals=2)
+      }),
+      'has_started': fields.Boolean,
+      'has_ended': fields.Boolean
+    }
+
+    return marshal(auction, ret_fields), 200
 
   #pylint: disable=R0915
   @auther.login_required
@@ -171,4 +219,18 @@ class Auction(Resource):
 
     crud.save()
 
-    return auction.to_api(), 200
+    ret_fields = {
+      'id': fields.Integer,
+      'title': fields.String,
+      'type': fields.String,
+      'reserve_met': fields.Boolean,
+      'sealed_bids': fields.Boolean,
+      'start_time': fields.DateTime,
+      'end_time': fields.DateTime,
+      'has_started': fields.Boolean,
+      'has_ended': fields.Boolean,
+      'starting_price': fields.Fixed(decimals=2),
+      'reserve': fields.Fixed(decimals=2)
+    }
+
+    return marshal(auction, ret_fields), 200

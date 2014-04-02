@@ -3,7 +3,6 @@
 from penelophant.database import db
 from .Model import Model
 from .User import User
-from penelophant.exceptions import MethodNotAllowed
 from penelophant.fields import JSONType
 
 class UserAuthentication(Model):
@@ -22,6 +21,3 @@ class UserAuthentication(Model):
   __table_args__ = (
     db.UniqueConstraint('provider', 'key'),
   )
-
-  def to_api(self):
-    raise MethodNotAllowed()

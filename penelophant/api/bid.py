@@ -2,7 +2,7 @@
 
 from decimal import Decimal
 from flask import g
-from flask_restful import Resource, abort, reqparse
+from flask_restful import Resource, abort, reqparse, fields, marshal
 from penelophant import crud, auther
 from penelophant.models.Bid import Bid as Bid_model
 from penelophant.helpers.auction import get_auction_by_id_or_abort
@@ -17,15 +17,26 @@ class BidAuction(Resource):
 
     bids = auction.posted_bids
 
-    if bids is None:
-      return {'bids': {}, 'length': 0}, 200
+    data = {'bids': [], 'length': 0}
 
-    data = {
-      "bids": [bid.to_api() for bid in bids],
-      "length": len(bids)
+    if bids is not None:
+      data['bids'] = bids
+      data['length'] = len(bids)
+
+    ret_fields = {
+      'length': fields.Integer,
+      'bids': fields.List(fields.Nested({
+        'id': fields.Integer,
+        'auction': fields.Nested({
+          'id': fields.Integer,
+          'tite': fields.String
+        }),
+        'bid_time': fields.DateTime,
+        'price': fields.Fixed(decimals=2)
+      }))
     }
 
-    return data, 200
+    return marshal(data, ret_fields), 200
 
   @auther.login_required
   def post(self, auction_id):
@@ -60,4 +71,14 @@ class BidAuction(Resource):
 
     crud.add(fixed_bid)
 
-    return fixed_bid.to_api(), 200
+    ret_fields = {
+      'id': fields.Integer,
+      'auction': fields.Nested({
+        'id': fields.Integer,
+        'tite': fields.String
+      }),
+      'bid_time': fields.DateTime,
+      'price': fields.Fixed(decimals=2)
+    }
+
+    return marshal(fixed_bid, ret_fields), 200

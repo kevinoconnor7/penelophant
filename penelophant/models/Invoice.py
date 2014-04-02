@@ -25,10 +25,3 @@ class Invoice(Model):
 
   user = db.relationship(User)
   bid = db.relationship(Bid)
-
-  __api_fields__ = [
-    'id',
-    'user',
-    'bid',
-    'amount'
-  ]
