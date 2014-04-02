@@ -5,14 +5,10 @@ from flask_restful import Resource, fields, marshal
 from penelophant import auther
 from penelophant.database import db
 from penelophant.models.Invoice import Invoice as Invoice_model
-
-#from flask import g
-#from flask_restful import Resource, reqparse
-#from decimal import Decimal
-#from penelophant import crud, auther"""
+from penelophant.helpers.invoice import get_invoice_by_id
 
 class InvoiceList(Resource):
-  """ Invoice List REST API """
+  """ Invoice List REST API endpoint """
 
   @auther.login_required
   def get(self):
@@ -47,5 +43,9 @@ class InvoiceList(Resource):
 
     return marshal(data, ret_fields), 200
 
-  def put(self):
+class Invoice(Resource):
+  """ Invoice REST API endpoint """
+
+  def put(self, invoice_id):
     """ User pays an invoice """
+    pass
