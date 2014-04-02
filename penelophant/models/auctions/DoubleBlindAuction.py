@@ -8,4 +8,4 @@ class DoubleBlindAuction(Auction):
   __name__ = 'Double-Blind Auction'
   __mapper_args__ = {'polymorphic_identity': __type__}
 
-  show_highest_bid = False
+  sealed_bids = True
