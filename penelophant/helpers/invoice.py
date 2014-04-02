@@ -8,7 +8,7 @@ def get_invoice_by_id(invoice_id):
   """ Get an invoice by its id """
   invoice_id = int(invoice_id)
   session = db.session
-  invoice = session.query(Invoice).filter(Invoice.id == invoice_id).first()
+  invoice = session.query(Invoice).get(invoice_id)
   return invoice
 
 def get_invoice_by_id_or_abort(invoice_id):

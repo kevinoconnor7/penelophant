@@ -8,7 +8,7 @@ def get_user_by_id(user_id):
   """ Get a user by a given id """
   user_id = int(user_id)
   session = db.session
-  user = session.query(User).filter(User.id == user_id).first()
+  user = session.query(User).get(user_id)
   return user
 
 def get_user_by_id_or_abort(user_id):
