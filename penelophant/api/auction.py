@@ -64,6 +64,12 @@ class AuctionList(Resource):
       start_time = datetime.utcfromtimestamp(args.start_time)
     end_time = datetime.utcfromtimestamp(args.end_time)
 
+    if args.title is None:
+      abort(400, message="You need a title for this auction!")
+
+    if args.type is None:
+      abort(400, message="You need a type for this auction!")
+
     if not end_time > start_time:
       abort(400, message="End time cannot before the start time")
 
