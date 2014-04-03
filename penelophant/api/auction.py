@@ -17,8 +17,16 @@ class AuctionList(Resource):
     session = db.session
     auctions = session.query(Auction_model)\
       .filter(Auction_model.start_time <= datetime.utcnow())\
-      .filter(Auction_model.end_time > datetime.utcnow())\
-      .all()
+      .filter(Auction_model.end_time > datetime.utcnow())
+
+    parser = reqparse.RequestParser()
+    parser.add_argument('query', type=str)
+    args = parser.parse_args()
+
+    if args.query is not None and args.query:
+      auctions.filter(Auction_model.title.like(args.query))
+
+    auctions = auctions.all()
 
     data = {'auctions': {}, 'length': 0}
     if auctions is not None:
