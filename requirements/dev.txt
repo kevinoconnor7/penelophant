@@ -1,1 +1,2 @@
 -r common.txt
+fake-factory==0.4.0

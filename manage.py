@@ -4,6 +4,7 @@ from os import environ
 import subprocess
 from flask.ext.script import Manager
 from penelophant.commands.db import InitDB
+from penelophant.commands.fake import Fake
 # initialize app before further imports
 from penelophant import create_app
 
@@ -18,4 +19,5 @@ if __name__ == '__main__':
     help="config file"
   )
   manager.add_command("initdb", InitDB())
+  manager.add_command("fake", Fake())
   manager.run()
