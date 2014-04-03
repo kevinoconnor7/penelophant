@@ -15,7 +15,7 @@ class InvoiceList(Resource):
   def get(self):
     """ List all of the user's invoices """
     session = db.session
-    invoices = session.query(Invoice_model).filter(Invoice_model.user == g.user).all()
+    invoices = g.user.invoices
 
     data = {'invoices': [], 'length': 0}
 
