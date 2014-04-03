@@ -102,6 +102,6 @@ class Auction(Model):
         .with_parent(self)\
         .order_by(Bid.price.desc())\
         .order_by(Bid.bid_time.asc())\
-        .one()
+        .first()
     except NoResultFound:
       return None
