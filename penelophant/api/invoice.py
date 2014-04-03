@@ -3,7 +3,6 @@
 from flask import g
 from flask_restful import Resource, fields, marshal
 from penelophant import auther, crud
-from penelophant.database import db
 from penelophant.helpers.invoice import get_invoice_by_id_or_abort
 from penelophant.exceptions import InvoiceAlreadyPaid
 
