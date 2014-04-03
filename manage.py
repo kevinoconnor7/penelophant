@@ -19,5 +19,5 @@ if __name__ == '__main__':
     help="config file"
   )
   manager.add_command("initdb", InitDB())
-  manager.add_command("fake", Fake())
+  manager.add_command("importfake", Fake())
   manager.run()
