@@ -18,7 +18,7 @@ class Bid(Model):
   bid_time = db.Column(db.TIMESTAMP, default=db.func.now())
   price = db.Column(db.Numeric('13,2'), default=0)
 
-  user = db.relationship(User)
+  user = db.relationship(User, backref="bids")
 
   # Will be populated by backref
   auction = None

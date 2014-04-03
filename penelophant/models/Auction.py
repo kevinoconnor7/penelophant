@@ -25,7 +25,7 @@ class Auction(Model):
 
   type = db.Column('type', db.String(50))
 
-  creator = db.relationship(User)
+  creator = db.relationship(User, backref="auctions")
 
   sealed_bids = False
 

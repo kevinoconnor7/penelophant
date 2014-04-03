@@ -23,5 +23,5 @@ class Invoice(Model):
   provider_details = db.Column(JSONType())
 
 
-  user = db.relationship(User)
+  user = db.relationship(User, backref="invoices")
   bid = db.relationship(Bid)
