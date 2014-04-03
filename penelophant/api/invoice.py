@@ -4,7 +4,6 @@ from flask import g
 from flask_restful import Resource, fields, marshal
 from penelophant import auther, crud
 from penelophant.database import db
-from penelophant.models.Invoice import Invoice as Invoice_model
 from penelophant.helpers.invoice import get_invoice_by_id_or_abort
 from penelophant.exceptions import InvoiceAlreadyPaid
 
@@ -14,7 +13,6 @@ class InvoiceList(Resource):
   @auther.login_required
   def get(self):
     """ List all of the user's invoices """
-    session = db.session
     invoices = g.user.invoices
 
     data = {'invoices': [], 'length': 0}
