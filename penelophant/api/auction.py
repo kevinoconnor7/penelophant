@@ -9,6 +9,31 @@ from penelophant.database import db
 from penelophant.helpers.auction import find_auction_type
 from penelophant.models.Auction import Auction as Auction_model
 
+auction_fields = {
+  'id': fields.Integer,
+  'title': fields.String,
+  'type': fields.String,
+  'reserve_met': fields.Boolean,
+  'sealed_bids': fields.Boolean,
+  'start_time': fields.DateTime,
+  'end_time': fields.DateTime,
+  'highest_bid': fields.Nested({
+    'id': fields.Integer,
+    'price': fields.Fixed(decimals=2)
+  }),
+  'creator': fields.Nested({
+    'id': fields.Integer,
+    'display_name': fields.String
+  }),
+  'bids': fields.List(fields.Nested({
+    'price': fields.Fixed(decimals=2),
+    'bid_time': fields.DateTime
+  })),
+  'has_started': fields.Boolean,
+  'has_ended': fields.Boolean,
+  'current_price': fields.Fixed(decimals=2)
+}
+
 class AuctionList(Resource):
   """ Auction List REST API """
 
@@ -28,31 +53,7 @@ class AuctionList(Resource):
 
     auctions = auctions.all()
 
-    data = {'auctions': {}, 'length': 0}
-    if auctions is not None:
-      data['auctions'] = auctions
-      data['length'] = len(auctions)
-
-    ret_fields = {
-      'length': fields.Integer,
-      'auctions': fields.List(fields.Nested({
-          'id': fields.Integer,
-          'title': fields.String,
-          'type': fields.String,
-          'reserve_met': fields.Boolean,
-          'sealed_bids': fields.Boolean,
-          'start_time': fields.DateTime,
-          'end_time': fields.DateTime,
-          'highest_bid': fields.Nested({
-            'id': fields.Integer,
-            'price': fields.Fixed(decimals=2)
-          }),
-          'has_started': fields.Boolean,
-          'has_ended': fields.Boolean
-        }))
-    }
-
-    return marshal(data, ret_fields), 200
+    return marshal(auctions, auction_fields), 200
 
   @auther.login_required
   def post(self):
@@ -109,21 +110,7 @@ class AuctionList(Resource):
 
     crud.add(auction)
 
-    ret_fields = {
-      'id': fields.Integer,
-      'title': fields.String,
-      'type': fields.String,
-      'reserve_met': fields.Boolean,
-      'sealed_bids': fields.Boolean,
-      'start_time': fields.DateTime,
-      'end_time': fields.DateTime,
-      'has_started': fields.Boolean,
-      'has_ended': fields.Boolean,
-      'starting_price': fields.Fixed(decimals=2),
-      'reserve': fields.Fixed(decimals=2)
-    }
-
-    return marshal(auction, ret_fields), 201
+    return marshal(auction, auction_fields), 201
 
 class Auction(Resource):
   """ Auction REST API Endpoint """
@@ -136,23 +123,7 @@ class Auction(Resource):
     if auction.start_time > datetime.utcnow() and auction.creator != g.user:
       abort(403, message="Not authorized to view this auction")
 
-    ret_fields = {
-      'id': fields.Integer,
-      'title': fields.String,
-      'type': fields.String,
-      'reserve_met': fields.Boolean,
-      'sealed_bids': fields.Boolean,
-      'start_time': fields.DateTime,
-      'end_time': fields.DateTime,
-      'highest_bid': fields.Nested({
-        'id': fields.Integer,
-        'price': fields.Fixed(decimals=2)
-      }),
-      'has_started': fields.Boolean,
-      'has_ended': fields.Boolean
-    }
-
-    return marshal(auction, ret_fields), 200
+    return marshal(auction, auction_fields), 200
 
   #pylint: disable=R0915
   @auther.login_required
@@ -233,18 +204,4 @@ class Auction(Resource):
 
     crud.save()
 
-    ret_fields = {
-      'id': fields.Integer,
-      'title': fields.String,
-      'type': fields.String,
-      'reserve_met': fields.Boolean,
-      'sealed_bids': fields.Boolean,
-      'start_time': fields.DateTime,
-      'end_time': fields.DateTime,
-      'has_started': fields.Boolean,
-      'has_ended': fields.Boolean,
-      'starting_price': fields.Fixed(decimals=2),
-      'reserve': fields.Fixed(decimals=2)
-    }
-
-    return marshal(auction, ret_fields), 200
+    return marshal(auction, auction_fields), 200

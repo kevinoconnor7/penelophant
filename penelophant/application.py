@@ -57,11 +57,11 @@ def register_api():
   api.add_resource(apis.Token, '/token')
 
   api.add_resource(apis.AuctionList, '/auctions')
-  api.add_resource(apis.Auction, '/auction/<int:auction_id>')
-  api.add_resource(apis.BidAuction, '/auction/<int:auction_id>/bid')
+  api.add_resource(apis.Auction, '/auctions/<int:auction_id>')
+  api.add_resource(apis.BidAuction, '/auctions/<int:auction_id>/bid')
 
   api.add_resource(apis.InvoiceList, '/invoices')
-  api.add_resource(apis.Invoice, '/invoice/<int:invoice_id>')
+  api.add_resource(apis.Invoice, '/invoices/<int:invoice_id>')
 
 def register_db():
   """ Load SQLAlchemy into the app """

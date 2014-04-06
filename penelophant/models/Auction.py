@@ -30,11 +30,19 @@ class Auction(Model):
   sealed_bids = False
 
   # Populated by the backref
-  bids = db.relationship(Bid, backref="auction")
+  bids_rel = db.relationship(Bid, backref="auction")
 
   __mapper_args__ = {
     'polymorphic_on': type
   }
+
+  @property
+  def bids(self):
+    """ Returns the bids rel if not currently sealed """
+    if self.sealed_bids and not self.has_ended:
+      return None
+
+    return self.bids_rel
 
   @property
   def reserve_met(self):
@@ -81,7 +89,7 @@ class Auction(Model):
   @property
   def highest_bid(self):
     """ Return the highest bid """
-    if self.sealed_bids:
+    if self.sealed_bids and not self.has_ended:
       return None
 
     return self.get_highest_bid()
