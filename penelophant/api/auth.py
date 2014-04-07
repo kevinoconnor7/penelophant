@@ -37,7 +37,8 @@ class Auth(Resource):
         'token': fields.String,
         'user': fields.Nested({
           'id': fields.Integer,
-          'email': fields.String
+          'email': fields.String,
+          'display_name': fields.String
         })
       }
       return marshal(data, ret_fields), 200
