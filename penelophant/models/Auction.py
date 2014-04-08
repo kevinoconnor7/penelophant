@@ -1,5 +1,6 @@
 """ Auction Model """
 
+from flask import g
 from datetime import datetime
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import object_session
@@ -40,7 +41,8 @@ class Auction(Model):
   def bids(self):
     """ Returns the bids rel if not currently sealed """
     if self.sealed_bids and not self.has_ended:
-      return None
+      return self.my_bids
+
 
     return self.bids_rel
 
@@ -85,6 +87,21 @@ class Auction(Model):
       .order_by(Bid.price.desc())\
       .order_by(Bid.bid_time.desc())\
       .all()
+
+  @property
+  def my_bids(self):
+    """ Return the logged in user's bid for the auction """
+    if not g.user:
+      return None
+
+    return object_session(self)\
+      .query(Bid)\
+      .with_parent(self)\
+      .filter(Bid.user == g.user)\
+      .order_by(Bid.price.desc())\
+      .order_by(Bid.bid_time.desc())\
+      .all()
+
 
   @property
   def highest_bid(self):
