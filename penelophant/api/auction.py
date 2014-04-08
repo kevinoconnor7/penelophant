@@ -49,11 +49,9 @@ class AuctionList(Resource):
     args = parser.parse_args()
 
     if args.query is not None and args.query:
-      auctions.filter(Auction_model.title.like(args.query))
+      auctions = auctions.filter(Auction_model.title.ilike("%"+str(args.query)+"%"))
 
-    auctions = auctions.all()
-
-    return marshal(auctions, auction_fields), 200
+    return marshal(auctions.all(), auction_fields), 200
 
   @auther.login_required
   def post(self):
