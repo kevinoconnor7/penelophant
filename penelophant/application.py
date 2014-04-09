@@ -5,6 +5,7 @@ from flask import g
 from flask_restful import Api
 from penelophant import views
 from penelophant import api as apis
+from penelophant import tasks
 from .database import db
 from penelophant.auth.utils import load_backends, verify_user_token
 #import balanced <-- httplib doesn't work in python3

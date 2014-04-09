@@ -64,3 +64,6 @@ docs/_build/
 penelophant/config/*
 !penelophant/config/DefaultConfig.py
 !penelophant/config/__init__.py
+
+# Celery stuff:
+celerybeat-schedule
