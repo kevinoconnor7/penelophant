@@ -6,6 +6,11 @@ from .User import User
 
 class Bid(Model):
   """ Bid data representation """
+
+  __mapper_args__ = {
+    'order_by': 'price DESC, bid_time ASC'
+  }
+
   id = db.Column(db.Integer, primary_key=True)
   user_id = db.Column(db.Integer,
     db.ForeignKey(User.id, ondelete='RESTRICT', onupdate='CASCADE'),
