@@ -44,21 +44,22 @@ my_celery = make_celery(flask_app)
 def auction_completion():
   """ Check if auction is complete
 
-  If it is, mark it as ended and generate an invoice.
+  If it is, generate an invoice.
   """
+
   session = db.session
+  # get all completed auctions
   auctions = session.query(Auction_model)\
-    .filter(Auction_model.end_time < datetime.utcnow())\
-    .filter(Auction_model.has_ended == False)
+  .filter(Auction_model.end_time < datetime.utcnow())
 
   for auction in auctions:
-    auction.has_ended = True
-
     inv = Invoice_model()
     inv.bid, inv.amount = auction.find_winner()
     inv.user = inv.bid.user
 
-    crud.add(inv)
+    # add the invoice if it does not exist
+    if session.query(Invoice_model).filter(Invoice_model.bid == inv.bid).count() == 0:
+      crud.add(inv)
 
   return
 
