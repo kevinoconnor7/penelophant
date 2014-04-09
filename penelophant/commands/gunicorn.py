@@ -103,7 +103,7 @@ class Gunicorn(Command):
 
     def remove_non_gunicorn_command_line_args():
       import sys
-      args_to_remove = ['--port','-p','--appconfig']
+      args_to_remove = ['--port','-p','--appconfig','--host','-t']
       def args_filter(name_or_value):
         keep = not args_to_remove.count(name_or_value)
         if keep:
