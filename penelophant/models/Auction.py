@@ -43,7 +43,6 @@ class Auction(Model):
     if self.sealed_bids and not self.has_ended:
       return self.my_bids
 
-
     return self.bids_rel
 
   @property
@@ -101,7 +100,6 @@ class Auction(Model):
       .order_by(Bid.price.desc())\
       .order_by(Bid.bid_time.desc())\
       .all()
-
 
   @property
   def highest_bid(self):
