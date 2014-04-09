@@ -58,7 +58,7 @@ def auction_completion():
     inv.user = inv.bid.user
 
     # add the invoice if it does not exist
-    if session.query(Invoice_model).filter(Invoice_model.bid == inv.bid).count() == 0:
+    if session.query(Invoice_model).filter(Invoice_model.bid_id == inv.bid_id).count() == 0:
       crud.add(inv)
 
   return
