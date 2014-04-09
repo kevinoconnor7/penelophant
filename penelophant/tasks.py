@@ -51,8 +51,6 @@ def auction_completion():
     .filter(Auction_model.end_time < datetime.utcnow())\
     .filter(Auction_model.has_ended == False)
 
-  invoices = []
-
   for auction in auctions:
     auction.has_ended = True
 
@@ -60,9 +58,7 @@ def auction_completion():
     inv.bid, inv.amount = auction.find_winner()
     inv.user = inv.bid.user
 
-    invoices.append(inv)
-
-  crud.save()
+    crud.add(inv)
 
   return
 
