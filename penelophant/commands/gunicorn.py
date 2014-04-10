@@ -6,7 +6,7 @@ from gunicorn.arbiter import Arbiter
 from gunicorn.config import Config
 
 # pylint: disable=W0223
-class Gunicorn(Command):
+class GunicornCmd(Command):
   """Run the app within Gunicorn"""
 
   def __init__(self, host='127.0.0.1', port=8000, workers=6):
