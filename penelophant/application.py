@@ -3,8 +3,10 @@
 from penelophant import app, auther
 from flask import g
 from flask_restful import Api
+from multiprocessing import Process
 from penelophant import views
 from penelophant import api as apis
+from penelophant import tasks
 from .database import db
 from penelophant.auth.utils import load_backends, verify_user_token
 #import balanced <-- httplib doesn't work in python3
@@ -26,6 +28,8 @@ def setup_app(config):
   register_api()
   register_db()
   register_auth_backends()
+
+  Process(target=lambda: tasks.my_celery.start(["celery", "beat"])).start()
 
   #return app
 
