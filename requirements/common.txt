@@ -8,3 +8,4 @@ py-bcrypt==0.4
 PyJWT==0.1.9
 celery==3.1.10
 -e git+https://github.com/zmike808/balanced-python.git#egg=balanced
+gunicorn==18.0

@@ -61,6 +61,7 @@ class Gunicorn(Command):
       class FlaskApplication(Application):
         """ Flask app helper class """
         def init(self, parser, opts, args):
+          """ Initialize application """
           return {
             'bind': '{0}:{1}'.format(host, port),
             'workers': workers
