@@ -1,6 +1,9 @@
 """ Gunicorn starter command """
 from flask_script import Command, Option
 from gunicorn.app.base import Application
+from gunicorn import version_info
+from gunicorn.arbiter import Arbiter
+from gunicorn.config import Config
 
 # pylint: disable=W0223
 class Gunicorn(Command):
@@ -51,10 +54,7 @@ class Gunicorn(Command):
 
     remove_non_gunicorn_command_line_args()
 
-    from gunicorn import version_info
     if version_info < (0, 9, 0):
-      from gunicorn.arbiter import Arbiter
-      from gunicorn.config import Config
       arbiter = Arbiter(Config({'bind': "%s:%d" % (host, int(port)), 'workers': workers}), app)
       arbiter.run()
     else:
