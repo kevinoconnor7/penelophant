@@ -5,7 +5,7 @@ import subprocess
 from flask.ext.script import Manager
 from penelophant.commands.db import InitDB
 from penelophant.commands.fake import Fake
-from penelophant.commands.gunicorn import GunicornCmd
+from penelophant.commands.gunicorncmd import GunicornCmd
 from penelophant.commands.celery import CeleryCmd
 # initialize app before further imports
 from penelophant import create_app
