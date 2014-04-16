@@ -57,6 +57,7 @@ def register_api():
   api.add_resource(apis.Token, '/token')
 
   api.add_resource(apis.AuctionList, '/auctions')
+  api.add_resource(apis.AuctionTypeList, '/auctions/types')
   api.add_resource(apis.Auction, '/auctions/<int:auction_id>')
   api.add_resource(apis.BidAuction, '/auctions/<int:auction_id>/bid')
 

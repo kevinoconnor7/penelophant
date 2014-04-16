@@ -22,6 +22,13 @@ def find_auction_type(typename):
       return clazz
   return None
 
+def get_all_auction_types():
+  """ Get a list of all auction types """
+  types = []
+  for dummy, clazz in find_subclasses(auctions, Auction):
+    types.append(clazz)
+  return types
+
 def get_auction_by_id(auction_id):
   """ Get a auction by a given id """
   auction_id = int(auction_id)

@@ -9,7 +9,9 @@ class DoubleBlindAuction(Auction):
   """ Double Blind Auction implementation """
 
   __type__ = 'doubleblind'
-  __name__ = 'Double-Blind Auction'
+  __title__ = 'Double-Blind Auction'
+  __description__ = 'A sealed-bid auction in which the bidder with the highest bid pays the second'\
+    ' highest price.'
   __mapper_args__ = {'polymorphic_identity': __type__}
 
   sealed_bids = True

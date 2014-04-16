@@ -6,7 +6,7 @@ from decimal import Decimal
 from datetime import datetime, timedelta
 from penelophant import crud, auther
 from penelophant.database import db
-from penelophant.helpers.auction import find_auction_type
+from penelophant.helpers.auction import find_auction_type, get_all_auction_types
 from penelophant.models.Auction import Auction as Auction_model
 
 auction_fields = {
@@ -203,3 +203,17 @@ class Auction(Resource):
     crud.save()
 
     return marshal(auction, auction_fields), 200
+
+class AuctionTypeList(Resource):
+  """ REST endpoint for auction types """
+
+  def get(self):
+    """ Get a list of all auction types """
+    types = get_all_auction_types()
+    ret_fields = {
+      'title': fields.String(attribute='__title__'),
+      'description': fields.String(attribute='__description__'),
+      'type': fields.String(attribute='__type__')
+    }
+
+    return marshal(types, ret_fields), 200

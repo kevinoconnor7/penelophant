@@ -2,6 +2,6 @@
 from .user import User, UserList
 from .auth import Auth
 from .token import Token
-from .auction import AuctionList, Auction
+from .auction import AuctionList, Auction, AuctionTypeList
 from .bid import BidAuction
 from .invoice import InvoiceList, Invoice
