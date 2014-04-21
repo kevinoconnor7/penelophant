@@ -9,7 +9,11 @@ from penelophant.fields import JSONType
 class Invoice(Model):
   """ Invoice data representation """
   id = db.Column(db.Integer, primary_key=True)
-  user_id = db.Column(db.Integer,
+  payer_user_id = db.Column(db.Integer,
+    db.ForeignKey(User.id, ondelete='RESTRICT', onupdate='CASCADE'),
+    nullable=False
+  )
+  payee_user_id = db.Column(db.Integer,
     db.ForeignKey(User.id, ondelete='RESTRICT', onupdate='CASCADE'),
     nullable=False
   )
@@ -23,5 +27,6 @@ class Invoice(Model):
   provider_details = db.Column(JSONType())
 
 
-  user = db.relationship(User, backref="invoices")
+  payer = db.relationship(User, backref="invoices", foreign_keys=[payer_user_id])
+  payee = db.relationship(User, backref="owed_invoices", foreign_keys=[payee_user_id])
   bid = db.relationship(Bid)

@@ -7,5 +7,6 @@ passlib==1.6.2
 py-bcrypt==0.4
 PyJWT==0.1.9
 celery==3.1.10
--e git+https://github.com/zmike808/balanced-python.git#egg=balanced
+git+https://github.com/zmike808/wac.git#egg=wac
+git+https://github.com/zmike808/balanced-python.git#egg=balanced
 gunicorn==18.0

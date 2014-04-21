@@ -14,3 +14,4 @@ class EnvConfig(DefaultConfig):
 
   BROKER_URL = os.environ.get('PENELOPHANT_BROKER_URL')
   CELERY_CACHE_BACKEND = os.environ.get('PENELOPHANT_CELERY_CACHE_BACKEND')
+  BALANCED_API_SECRET = os.environ.get('PENELOPHANT_BALANCED_API_SECRET', None)

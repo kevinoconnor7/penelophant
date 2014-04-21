@@ -26,6 +26,7 @@ def setup_app(config):
   register_api()
   register_db()
   register_auth_backends()
+  register_payment_providers()
 
   #return app
 
@@ -71,6 +72,11 @@ def register_db():
 def register_auth_backends():
   """ Register auth backends from config """
   load_backends(app.config['AUTH_BACKENDS'])
+
+def register_payment_providers():
+  """ Setup payment providers """
+  import balanced
+  balanced.configure(app.config['BALANCED_API_SECRET'])
 
 @app.before_request
 def get_current_user_by_token():

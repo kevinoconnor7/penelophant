@@ -22,7 +22,8 @@ def auction_completion():
   for auction in auctions:
     inv = Invoice_model()
     inv.bid, inv.amount = auction.find_winner()
-    inv.user = inv.bid.user
+    inv.payer = inv.bid.user
+    inv.payee = auction.creator
 
     # add the invoice if it does not exist
     if session.query(Invoice_model).filter(Invoice_model.bid_id == inv.bid_id).count() == 0:

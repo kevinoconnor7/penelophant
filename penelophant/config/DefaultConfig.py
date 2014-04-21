@@ -9,6 +9,8 @@ class DefaultConfig(object):
   SECRET_KEY = "I_AM_SO_SECRET_OMG_OMG_OMG_OMG_123"
   AUTH_BACKENDS = ()
   RSA_KEY = None
+  STATEMENT_MSG = "Penelophant"
+  BALANCED_API_SECRET = None
   BROKER_URL = "memory://"
   CELERY_CACHE_BACKEND = "cache://memory"
   CELERYBEAT_SCHEDULE = {
