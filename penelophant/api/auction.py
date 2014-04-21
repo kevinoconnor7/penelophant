@@ -27,7 +27,11 @@ auction_fields = {
   }),
   'bids': fields.List(fields.Nested({
     'price': fields.Fixed(decimals=2),
-    'bid_time': fields.DateTime
+    'bid_time': fields.DateTime,
+    'user': fields.Nested({
+      'id': fields.Integer,
+      'display_name': fields.String
+    })
   })),
   'has_started': fields.Boolean,
   'has_ended': fields.Boolean,
