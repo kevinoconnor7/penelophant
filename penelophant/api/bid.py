@@ -6,7 +6,6 @@ from flask_restful import Resource, abort, reqparse, fields, marshal
 from penelophant import crud, auther
 from penelophant.models.Bid import Bid as Bid_model
 from penelophant.helpers.auction import get_auction_by_id_or_abort
-#from penelophant.models.Bid import Auction as Auction_model
 
 class BidAuction(Resource):
   """ Auction-Bid REST API interaction """
@@ -53,10 +52,10 @@ class BidAuction(Resource):
       abort(404, message='Auction not found')
 
     parser = reqparse.RequestParser()
-    parser.add_argument('price', type=Decimal)
+    parser.add_argument('price', type=Decimal, help="Bid must be of decimal type")
     args = parser.parse_args()
 
-    if args.price is None or args.price < 0:
+    if args.price is None or args.price <= 0:
       abort(400, message='Bid price must be positive')
 
     bid = Bid_model()
