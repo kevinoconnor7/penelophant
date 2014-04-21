@@ -1,3 +1,5 @@
+git+https://github.com/zmike808/wac.git#egg=wac
+git+https://github.com/zmike808/balanced-python.git#egg=balanced
 flask==0.10.1
 flask-restful==0.2.11
 Flask-Script==0.6.7
@@ -7,6 +9,4 @@ passlib==1.6.2
 py-bcrypt==0.4
 PyJWT==0.1.9
 celery==3.1.10
-git+https://github.com/zmike808/wac.git#egg=wac
-git+https://github.com/zmike808/balanced-python.git#egg=balanced
 gunicorn==18.0
