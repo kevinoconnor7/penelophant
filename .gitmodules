@@ -1,0 +1,3 @@
+[submodule "penelophant-frontend"]
+	path = penelophant-frontend
+	url = git@github.com:kevinoconnor7/penelophant-frontend.git
