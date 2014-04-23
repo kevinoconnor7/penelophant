@@ -20,6 +20,7 @@ class Auction(Model):
   end_time = db.Column(db.TIMESTAMP)
 
   title = db.Column(db.String(100), nullable=False)
+  description = db.Column(db.Text)
 
   start_price = db.Column(db.Numeric('13,2'), default=0)
   reserve = db.Column(db.Numeric('13,2'), default=0)

@@ -1,6 +1,6 @@
 """ Auction REST resources """
 
-from flask import g, Markup
+from flask import g
 from flask_restful import Resource, reqparse, abort, fields, marshal
 from decimal import Decimal
 from datetime import datetime, timedelta
@@ -12,6 +12,7 @@ from penelophant.models.Auction import Auction as Auction_model
 auction_fields = {
   'id': fields.Integer,
   'title': fields.String,
+  'description': fields.String,
   'type': fields.String,
   'reserve_met': fields.Boolean,
   'sealed_bids': fields.Boolean,
@@ -61,14 +62,17 @@ class AuctionList(Resource):
   def post(self):
     """ Handle auction creation """
     parser = reqparse.RequestParser()
-    parser.add_argument('title', type=str)
-    parser.add_argument('type', type=str)
+    parser.add_argument('title', type=str, required=True)
+    parser.add_argument('description', type=str)
+    parser.add_argument('type', type=str, required=True)
     parser.add_argument('start_time', type=int) # Must be a UNIX timestamp
-    parser.add_argument('end_time', type=int) # Must be a UNIX timestamp
+    parser.add_argument('end_time', type=int, required=True) # Must be a UNIX timestamp
     parser.add_argument('reserve', type=Decimal)
     parser.add_argument('start_price', type=Decimal)
 
     args = parser.parse_args()
+
+    print(args.title)
 
     start_time = datetime.utcnow()
     if args.start_time:
@@ -84,8 +88,11 @@ class AuctionList(Resource):
     if not end_time > start_time:
       abort(400, message="End time cannot before the start time")
 
-    if not start_time >= datetime.utcnow()-timedelta(seconds=30):
+    if not start_time >= datetime.utcnow()-timedelta(minutes=5):
       abort(400, message="Start time cannot be in the past")
+    else:
+      if start_time < datetime.utcnow():
+        start_time = datetime.utcnow()
 
     if args.start_price is None:
       args.start_price = 0
@@ -103,7 +110,8 @@ class AuctionList(Resource):
       args.reserve = 0
 
     auction = find_auction_type(args.type)()
-    auction.title = Markup.escape(args.title)
+    auction.title = args.title
+    auction.description = args.description
     auction.start_time = start_time
     auction.end_time = end_time
     auction.reserve = args.reserve
@@ -140,6 +148,7 @@ class Auction(Resource):
 
     parser = reqparse.RequestParser()
     parser.add_argument('title', type=str)
+    parser.add_argument('description', type=str)
     parser.add_argument('reserve', type=Decimal)
     parser.add_argument('start_time', type=int) # Must be a UNIX timestamp
     parser.add_argument('end_time', type=int) # Must be a UNIX timestamp
@@ -159,6 +168,9 @@ class Auction(Resource):
 
     if args.title is None:
       args.title = auction.title
+
+    if args.description is None:
+      args.description = auction.description
 
     if args.reserve is None:
       args.reserve = auction.reserve
@@ -198,7 +210,8 @@ class Auction(Resource):
       if not start_time >= datetime.utcnow()-timedelta(seconds=30):
         abort(400, message="Start time cannot be in the past")
 
-    auction.title = Markup.escape(args.title)
+    auction.title = args.title
+    auction.description = args.description
     auction.start_time = start_time
     auction.end_time = end_time
     auction.reserve = args.reserve
