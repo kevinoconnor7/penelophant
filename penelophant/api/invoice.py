@@ -64,8 +64,6 @@ class Invoice(Resource):
     if invoice.paid:
       raise InvoiceAlreadyPaid
 
-    print(args)
-
     card = balanced.Card.fetch('/cards/%s' % args.ccId)
     debit = card.debit(
       appears_on_statement_as=app.config['STATEMENT_MSG'],

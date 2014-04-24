@@ -25,7 +25,7 @@ class Auction(Model):
   start_price = db.Column(db.Numeric('13,2'), default=0)
   reserve = db.Column(db.Numeric('13,2'), default=0)
 
-  type = db.Column('type', db.String(50))
+  type = db.Column('type', db.String(50), nullable=False)
 
   creator = db.relationship(User, backref="auctions")
 
