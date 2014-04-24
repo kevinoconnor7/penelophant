@@ -9,3 +9,4 @@ install:
 
 script:
   - ./lint.sh
+  - python -W ignore:Dialect -m unittest discover -s test -p '*_test.py'
