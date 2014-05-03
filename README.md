@@ -21,6 +21,9 @@ Penelophant is RESTful auction service that provides modular auction types, paym
   7. Run the server: ```python manage.py -c "penelophant.config.LocalConfig.LocalConfig" runserver``` (```python3```)
   8. To exit your virtualenv when you are done: ```deactivate```
 
+## Heroku
+This application can be installed directly to Heroku by switching to the heroku branch ```git checkout heroku```. Then run ```heroku create``` and ```git push heroku heroku:master```. You'll need to set some config settings using environment variables. The config keys to be set can be found in ```EnvConfig.py```. You can use ```heroku config:set KEY=value``` to set these.
+
 ## License
 We are using the Apache Licence, version 2.0. For the full license
 text, please see the included LICENSE file.
